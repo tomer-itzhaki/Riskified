@@ -19,13 +19,9 @@ class Visa extends Credit {
     }
 
     handleResponse(result) {
-        if (result.status == 200) {
-            const hasFailed = result.data.chargeResult == visaFailure;
-            return this.getResponse(result.status, hasFailed, result.data.resultReason);
-        }
-        else {
-            return this.getResponse(500, true, null)
-        }
+        const hasFailed = result.status == 200 ? result.data.chargeResult == visaFailure : true
+        return this.getResponse(result.status, hasFailed, result.data.resultReason);
+
     }
 }
 

@@ -21,15 +21,12 @@ class MasterCard extends Credit {
     }
 
     handleResponse(result) {
-        if (result.status == 200 || result.status == 400) {
-            const hasFailed = result.status == 400;
-            return this.getResponse(200, hasFailed, hasFailed ? result.data[masterCardFail]
-                : null);
-        }
-        else {
-            return this.getResponse(500, true, null)
-        }
+        const hasFailed = result.status == 200 ? false : true;
+        return this.getResponse(result.status, hasFailed, result.data[masterCardFail]);
     }
+
+
+
 }
 
 export default MasterCard;
