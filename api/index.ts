@@ -1,17 +1,14 @@
 import express from 'express';
+import { getSchemaCheckerMW } from './schemes';
+import { charge, getHistoryByMerchant } from './chargeBu';
+import { merchantIdentifier } from '../consts';
+
 const router = express.Router()
-const getSchemaCheckerMW = require('./schemes.js');
-import { charge, getHistory } from './chargeBu';
 
-
-//to delete
-router.get('/check', (req, res) => {
-    res.status(200).send('lets go!')
-})
 
 router.post('/charge', getSchemaCheckerMW('charge'), async (req, res) => {
     try {
-        const merchant = req.headers['merchant-identifier'];
+        const merchant = req.headers[merchantIdentifier];
         const result = await charge({ ...req.body }, merchant);
         res.status(result.status).send(result.data);
     }
@@ -22,8 +19,8 @@ router.post('/charge', getSchemaCheckerMW('charge'), async (req, res) => {
 })
 
 router.get('/chargeStatuses', (req, res) => {
-    const merchant = req.headers['merchant-identifier'];
-    const result = getHistory(merchant as string);
+    const merchant = req.headers[merchantIdentifier];
+    const result = getHistoryByMerchant(merchant as string);
     return res.status(200).send(result)
 })
 

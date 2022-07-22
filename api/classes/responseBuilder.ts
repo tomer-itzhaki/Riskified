@@ -1,4 +1,4 @@
-import { errorMessage } from '../../consts.js'
+import { errorMessage } from '../../consts'
 
 class Response {
     static buildSuccessResponse() {

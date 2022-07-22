@@ -5,7 +5,7 @@ import Sender from './sender';
 
 
 
-export default class CreditFactory {
+export default class CreditCardFactory {
     static factoryMap: { [key: string]: creditTypes } = creditMap;
     private constructor() {
 

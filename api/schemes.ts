@@ -1,8 +1,8 @@
-const yup = require('yup');
-const { creditCardCompanies, cardDateRegex } = require('../consts')
+import * as yup from 'yup'
+import { creditCardCompanies, cardDateRegex, merchantIdentifier } from '../consts'
 
 
-let charge = yup.object().shape({
+const charge = yup.object().shape({
     body: yup.object().shape({
         fullName: yup.string().required(),
         creditCardNumber: yup.string().required(),
@@ -12,7 +12,7 @@ let charge = yup.object().shape({
         amount: yup.number().required()
     }).required(),
     headers: yup.object().shape({
-        'merchant-identifier': yup.string().required()
+        [merchantIdentifier]: yup.string().required()
     }).required()
 });
 
@@ -22,7 +22,7 @@ const schemeDic = {
 }
 
 
-function getSchemaCheckerMW(schema) {
+const getSchemaCheckerMW = (schema) => {
     return async (req, res, next) => {
         try {
             let isValid = await schemeDic[schema].isValid(req)
@@ -34,4 +34,4 @@ function getSchemaCheckerMW(schema) {
     }
 }
 
-module.exports = getSchemaCheckerMW;
+export { getSchemaCheckerMW };

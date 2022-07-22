@@ -1,7 +1,8 @@
-import axios from 'axios'; // axios = require('axios');
-const axiosRetry = require('axios-retry');
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
+
 class Sender {
-    numberOfTries: number;
+    private numberOfTries: number;
 
     constructor(numberOfTries) { this.numberOfTries = numberOfTries }
 
@@ -12,10 +13,9 @@ class Sender {
                 retries: this.numberOfTries,
                 retryDelay: (retryCount) => {
                     console.log(`retry attempt: ${retryCount}`);
-                    return Math.pow(2, retryCount) * 1000; // time interval between retries
+                    return Math.pow(2, retryCount) * 1000;
                 },
                 retryCondition: (error) => {
-                    // if retry condition is not specified, by default idempotent requests are retried
                     return error.response.status >= 500;
                 },
             })

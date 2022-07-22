@@ -1,5 +1,5 @@
 import Credit from './credit';
-import { visaFailure } from '../../consts';
+import { visaFailure, restRequest } from '../../consts';
 import { visaBody } from './creditTypes';
 
 class Visa extends Credit {
@@ -14,17 +14,17 @@ class Visa extends Credit {
             totalAmount: this.details.amount
         }
         const [firstName] = this.details.fullName.split(' ');
-        const result = await this.sender.send('POST', this.url, body, { identifier: firstName })
-        return this.resultLogic(result);
+        const result = await this.sender.send(restRequest.POST, this.url, body, { identifier: firstName })
+        return this.handleResponse(result);
     }
 
-    resultLogic(result) {
+    handleResponse(result) {
         if (result.status == 200) {
             const hasFailed = result.data.chargeResult == visaFailure;
-            return this.getResponse(result.status, hasFailed,result.data.resultReason);
+            return this.getResponse(result.status, hasFailed, result.data.resultReason);
         }
         else {
-            return this.getResponse(500, true,null)
+            return this.getResponse(500, true, null)
         }
     }
 }

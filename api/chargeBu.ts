@@ -1,6 +1,6 @@
 import Sender from './classes/sender';
-import CreditFactory from './classes/creditFactory';
-import { attemptCount } from '../consts.js';
+import CreditCardFactory from './classes/creditFactory';
+import { attemptCount } from '../consts';
 import DeclineMemory from './classes/declineMemory';
 
 const memo = DeclineMemory.getInstance();
@@ -11,7 +11,7 @@ const charge = async (body, merchant) => {
     delete creditDetails['creditCardCompany']
     const sender = new Sender(attemptCount);
 
-    const card = CreditFactory.getCredit(company, creditDetails, sender)
+    const card = CreditCardFactory.getCredit(company, creditDetails, sender)
     const result = await card.charge();
     if (result.reason)
         addFailureToHistory(result.reason, merchant)
@@ -22,8 +22,8 @@ const addFailureToHistory = (reason: string, merchant: string) => {
     memo.add(merchant, reason)
 }
 
-const getHistory = (merchat: string) => {
+const getHistoryByMerchant = (merchat: string) => {
     return memo.get(merchat)
 }
 
-export { charge, getHistory };
+export { charge, getHistoryByMerchant};

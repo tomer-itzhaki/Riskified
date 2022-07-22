@@ -13,7 +13,7 @@ abstract class Credit {
     }
 
     abstract charge(): any
-    abstract resultLogic(result: any)
+    abstract handleResponse(result: any)
     getResponse(status: number, hasFailed: boolean, reason: string) {
         const result = hasFailed ? Response.buildFailedResponse(status, reason) : Response.buildSuccessResponse() 
         return result;
