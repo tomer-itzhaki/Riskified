@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router()
 const getSchemaCheckerMW = require('./schemes.js');
-import { charge, addHistory, getHistory } from './chargeBu';
+import { charge, getHistory } from './chargeBu';
 
 
 //to delete
@@ -11,9 +11,8 @@ router.get('/check', (req, res) => {
 
 router.post('/charge', getSchemaCheckerMW('charge'), async (req, res) => {
     try {
-        const result = await charge({ ...req.body });
         const merchant = req.headers['merchant-identifier'];
-        addHistory(result.reason, merchant as string);
+        const result = await charge({ ...req.body }, merchant);
         res.status(result.status).send(result.data);
     }
     catch {

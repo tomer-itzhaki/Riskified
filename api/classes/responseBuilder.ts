@@ -1,18 +1,20 @@
 import { errorMessage } from '../../consts.js'
+
 class Response {
-    static buildResponse(status, hasFailed, reason: string) {
+    static buildSuccessResponse() {
+        return { status: 200, data: {} };
+
+    }
+
+    static buildFailedResponse(status: number, reason: string) {
         const result = { status };
-        if (hasFailed) {
-            if (status >= 500)
-                result['data'] = {}
-            else {
-                result['data'] = { "error": errorMessage }
-                result['reason'] = reason;
-            }
-        }
-        else {
+        if (status >= 500)
             result['data'] = {}
+        else {
+            result['data'] = { "error": errorMessage }
+            result['reason'] = reason;
         }
+
         return result;
     }
 }

@@ -1,3 +1,4 @@
+
 class DeclineMemory {
     private static instance: DeclineMemory;
     private history;
@@ -17,7 +18,7 @@ class DeclineMemory {
         this.history[merchantIdentifier][declineReason] ? this.history[merchantIdentifier][declineReason]++ : this.history[merchantIdentifier][declineReason] = 1
     }
 
-    get(merchantIdentifier) {
+    get(merchantIdentifier): { [key: string]: number } {
         return this.history[merchantIdentifier] || {};
     }
 }

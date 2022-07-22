@@ -30,7 +30,7 @@ class Sender {
             return { status: result.status, data: result.data }
         }
         catch (e) {
-            return e.response
+            return { status: e.response.status, data: e.response.data }
         }
     }
 }
